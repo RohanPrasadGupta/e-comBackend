@@ -5,6 +5,8 @@ const productRouter = require("./routes/products/productRoutes");
 
 const reviewRouter = require("./routes/products/reviewRoutes");
 
+const userRouter = require("./routes/users/userRoutes");
+
 const app = express();
 
 const corsOptions = {
@@ -18,6 +20,7 @@ app.use(express.json());
 // using the Routers
 app.use("/", productRouter);
 app.use("/", reviewRouter);
+app.use("/", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
