@@ -39,7 +39,9 @@ exports.getAllProducts = async (req, res) => {
 exports.getOneProduct = async (req, res) => {
   console.log(req.query.id);
   try {
-    const product = await productModel.findById(req.query.id);
+    const product = await productModel
+      .findById(req.query.id)
+      .populate("reviews");
     if (!product) {
       return res.status(404).json({
         status: "fail",
