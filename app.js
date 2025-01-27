@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products/productRoutes");
 
@@ -12,12 +13,14 @@ const cartRouter = require("./routes/cart/cartRoutes");
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3001",
+  origin: "*", // allow to server to accept request from different origin
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD,SET",
   credentials: true,
 };
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // using the Routers
 app.use("/", productRouter);
