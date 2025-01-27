@@ -28,8 +28,6 @@ exports.signUp = async (req, res) => {
 exports.signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    console.log(email, password);
     const userDetails = await UserModel.findOne({ email }).select("+password");
     if (!userDetails) {
       return res.status(404).json({
