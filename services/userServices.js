@@ -27,14 +27,18 @@ exports.addUser = async (req, res) => {
 exports.getUSer = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
 
-    const userDetails = await UserModel.findOne({ email });
+    const userDetails = await UserModel.findOne({ email }).select("+password");
     if (!userDetails) {
       return res.status(404).json({
         status: "fail",
         message: "User not found",
       });
     }
+
+    console.log(userDetails);
+
     const isPasswordMatch = await bycrypt.compare(
       password,
       userDetails.password
@@ -54,7 +58,7 @@ exports.getUSer = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: "fail",
-      message: error,
+      message: error.message,
     });
   }
 };

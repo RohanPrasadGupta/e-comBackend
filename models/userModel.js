@@ -1,3 +1,4 @@
+const { query } = require("express");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -14,6 +15,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   dateUserCreated: {
     type: Date,

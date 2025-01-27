@@ -6,7 +6,6 @@ exports.addProductToCart = async (req, res) => {
 
     const cart = await cartModel.findOne({ user: user });
 
-    // If no cart exists, create a new one
     if (!cart) {
       const newCart = await cartModel.create({
         user: user,
@@ -21,20 +20,16 @@ exports.addProductToCart = async (req, res) => {
       });
     }
 
-    // Check if the product already exists in the cart
     const productIndex = cart.products.findIndex(
       (item) => item.product.toString() === product
     );
 
     if (productIndex > -1) {
-      // Product exists, update its quantity
       cart.products[productIndex].quantity += quantity;
     } else {
-      // Product does not exist, add it to the cart
       cart.products.push({ product, quantity });
     }
 
-    // Save the updated cart
     const updatedCart = await cart.save();
 
     return res.status(201).json({
@@ -45,6 +40,79 @@ exports.addProductToCart = async (req, res) => {
       data: {
         cart: updatedCart,
       },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
+exports.getCartItems = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const cart = await cartModel.findOne({ user: user }).populate({
+      path: "products.product",
+      model: "Product",
+    });
+
+    if (!cart) {
+      return res.status(200).json({
+        status: "success",
+        data: {
+          cart: [],
+        },
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: {
+        cart,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
+exports.deleteProductFromCart = async (req, res) => {
+  try {
+    const { user, productId } = req.body;
+    const cart = await cartModel.findOne({ user: user });
+
+    if (!cart) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Cart not found",
+      });
+    }
+
+    const productIndex = cart.products.findIndex(
+      (item) => item.product.toString() === productId
+    );
+
+    if (productIndex === -1) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Product not found in cart",
+      });
+    }
+
+    const updatedProducts = cart.products.filter(
+      (item) => item.product.toString() !== productId
+    );
+
+    cart.products = updatedProducts;
+    await cart.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product removed from cart",
     });
   } catch (error) {
     res.status(400).json({
