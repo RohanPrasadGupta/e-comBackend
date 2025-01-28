@@ -5,7 +5,25 @@ const secretKey = "secretKey1234";
 
 exports.addProductToOrder = async (req, res) => {
   try {
+    const token = req.cookies.cookie;
+
+    if (!token) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+
     const { orderItems: productsArray, user } = req.body;
+
+    if (user !== decoded.id) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
 
     const newOrder = await orderProductModel.create({
       user: user,
