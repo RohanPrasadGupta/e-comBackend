@@ -23,7 +23,7 @@ const productOrderedSchema = new mongoose.Schema({
       },
       status: {
         type: String,
-        enum: ["pending", "delivered", "cancelled"],
+        enum: ["pending", "dispatched", "delivered", "cancelled"],
         default: "pending",
       },
     },
