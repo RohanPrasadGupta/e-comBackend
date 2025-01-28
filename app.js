@@ -10,6 +10,8 @@ const userRouter = require("./routes/users/userRoutes");
 
 const cartRouter = require("./routes/cart/cartRoutes");
 
+const orderRouter = require("./routes/orders/orderRouter");
+
 const app = express();
 
 const corsOptions = {
@@ -27,6 +29,7 @@ app.use("/", productRouter);
 app.use("/", reviewRouter);
 app.use("/", userRouter);
 app.use("/", cartRouter);
+app.use("/", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
