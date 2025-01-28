@@ -1,8 +1,29 @@
+const jwt = require("jsonwebtoken");
 const cartModel = require("../models/cartModel");
+
+const secretKey = "secretKey1234";
 
 exports.addProductToCart = async (req, res) => {
   try {
+    const token = req.cookies.cookie;
+
+    if (!token) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+
     const { product, quantity, user } = req.body;
+
+    if (user !== decoded.id) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
 
     const cart = await cartModel.findOne({ user: user });
 
@@ -51,7 +72,26 @@ exports.addProductToCart = async (req, res) => {
 
 exports.getCartItems = async (req, res) => {
   try {
+    const token = req.cookies.cookie;
+
+    if (!token) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+
     const { user } = req.body;
+
+    if (user !== decoded.id) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
     const cart = await cartModel.findOne({ user: user }).populate({
       path: "products.product",
       model: "Product",
@@ -82,7 +122,26 @@ exports.getCartItems = async (req, res) => {
 
 exports.deleteProductFromCart = async (req, res) => {
   try {
+    const token = req.cookies.cookie;
+
+    if (!token) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+
     const { user, productId } = req.body;
+
+    if (user !== decoded.id) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Unauthorized access, please log in",
+      });
+    }
+
     const cart = await cartModel.findOne({ user: user });
 
     if (!cart) {

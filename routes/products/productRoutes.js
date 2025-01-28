@@ -1,12 +1,9 @@
 const express = require("express");
-const { verifyToken } = require("../../services/middleWare");
 const productController = require("../../services/productServices");
 
 const router = express.Router();
 
-router
-  .route("/getAllProducts")
-  .get(verifyToken, productController.getAllProducts);
+router.route("/getAllProducts").get(productController.getAllProducts);
 
 router
   .route("/product")
