@@ -10,6 +10,17 @@ exports.signUp = async (req, res) => {
     const { password } = req.body;
     const hashedPassword = await bycrypt.hash(password, saltRounds);
     req.body.password = hashedPassword;
+
+    const checkDuplicateEmail = await UserModel.findOne({
+      email: req.body.email,
+    });
+    if (checkDuplicateEmail) {
+      return res.status(400).json({
+        status: "fail",
+        message: "User already exists. Please login",
+      });
+    }
+
     const newUser = await UserModel.create(req.body);
     res.status(201).json({
       status: "success",
@@ -47,17 +58,29 @@ exports.signIn = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      {
-        id: userDetails._id,
-        email: userDetails.email,
-        name: userDetails.name,
-      },
-      secretKey,
-      {
-        expiresIn: "1h",
-      }
-    );
+    let token;
+    if (userDetails.role === "admin") {
+      token = jwt.sign(
+        {
+          id: userDetails._id,
+          email: userDetails.email,
+          name: userDetails.name,
+          role: userDetails.role,
+        },
+        secretKey,
+        { expiresIn: "1h" }
+      );
+    } else {
+      token = jwt.sign(
+        {
+          id: userDetails._id,
+          email: userDetails.email,
+          name: userDetails.name,
+        },
+        secretKey,
+        { expiresIn: "1h" }
+      );
+    }
 
     res.cookie("cookie", token, {
       httpOnly: true,

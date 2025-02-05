@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
   dateUserCreated: {
     type: Date,
     default: Date.now,
