@@ -85,6 +85,32 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+exports.getProductByCategory = async (req, res) => {
+  try {
+    const products = await productModel
+      .find({ category: req.query.category })
+      .populate("reviews");
+    res.status(200).json({
+      status: "success",
+      totalProducts: products.length,
+      data: {
+        products,
+      },
+    });
+    if (!products) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Product not found",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
 exports.addProductTest = async (req, res) => {
   try {
     const newProduct = await NewProductModel.create(req.body);
