@@ -177,3 +177,18 @@ exports.adminLogin = async (req, res) => {
     });
   }
 };
+
+exports.signOutUser = async (req, res) => {
+  try {
+    res.clearCookie("cookie");
+    res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
