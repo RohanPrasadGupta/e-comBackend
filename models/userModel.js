@@ -1,4 +1,3 @@
-const { query } = require("express");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -20,6 +19,10 @@ const userSchema = new mongoose.Schema({
   dateUserCreated: {
     type: Date,
     default: Date.now,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 });
 
