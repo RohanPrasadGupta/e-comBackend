@@ -15,8 +15,9 @@ const orderRouter = require("./routes/orders/orderRouter");
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:3000",
+  "http://localhost:3002",
   "https://rpg-ecommerce.netlify.app/",
+  "https://e-combackend-jbal.onrender.com/",
 ];
 
 const corsOptions = {
