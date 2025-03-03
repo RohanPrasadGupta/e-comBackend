@@ -73,7 +73,6 @@ exports.addProductToCart = async (req, res) => {
 exports.getCartItems = async (req, res) => {
   try {
     const token = req.cookies.cookie;
-
     if (!token) {
       return res.status(401).json({
         status: "fail",
@@ -82,17 +81,14 @@ exports.getCartItems = async (req, res) => {
     }
 
     const decoded = jwt.verify(token, secretKey);
-    console.log("decoded", decoded);
     const userID = req.query.UserId;
 
-    if (user !== decoded.id) {
+    if (userID !== decoded.id) {
       return res.status(401).json({
         status: "fail",
         message: "Unauthorized access, please log in",
       });
     }
-
-    console.log("userID", userID);
 
     const cart = await cartModel.findOne({ user: userID }).populate({
       path: "products.product",
