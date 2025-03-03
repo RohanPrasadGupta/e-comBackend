@@ -87,7 +87,7 @@ exports.signIn = async (req, res) => {
     res.cookie("cookie", token, {
       httpOnly: true,
       sameSite: "strict",
-      maxAge: 60 * 1000 * 60 * 24, // 1 day,
+      maxAge: 60 * 1000 * 60 * 24 * 7, // 7 day,
     });
 
     res.status(200).json({

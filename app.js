@@ -14,11 +14,17 @@ const orderRouter = require("./routes/orders/orderRouter");
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://rpg-ecommerce.netlify.app/",
+];
+
 const corsOptions = {
-  origin: "*", // allow to server to accept request from different origin
-  methods: "GET, POST, PUT, DELETE, PATCH, HEAD,SET",
+  origin: allowedOrigins,
+  methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
+
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());

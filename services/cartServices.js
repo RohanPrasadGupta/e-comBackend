@@ -82,8 +82,8 @@ exports.getCartItems = async (req, res) => {
     }
 
     const decoded = jwt.verify(token, secretKey);
-
-    const { user } = req.body;
+    console.log("decoded", decoded);
+    const userID = req.query.UserId;
 
     if (user !== decoded.id) {
       return res.status(401).json({
@@ -92,7 +92,9 @@ exports.getCartItems = async (req, res) => {
       });
     }
 
-    const cart = await cartModel.findOne({ user: user }).populate({
+    console.log("userID", userID);
+
+    const cart = await cartModel.findOne({ user: userID }).populate({
       path: "products.product",
       model: "Product",
     });
@@ -133,16 +135,17 @@ exports.deleteProductFromCart = async (req, res) => {
 
     const decoded = jwt.verify(token, secretKey);
 
-    const { user, productId } = req.body;
+    const productId = req.query.productId;
+    const userID = req.query.UserId;
 
-    if (user !== decoded.id) {
+    if (userID !== decoded.id) {
       return res.status(401).json({
         status: "fail",
         message: "Unauthorized access, please log in",
       });
     }
 
-    const cart = await cartModel.findOne({ user: user });
+    const cart = await cartModel.findOne({ user: userID });
 
     if (!cart) {
       return res.status(404).json({
@@ -152,7 +155,7 @@ exports.deleteProductFromCart = async (req, res) => {
     }
 
     const productIndex = cart.products.findIndex(
-      (item) => item.product.toString() === productId
+      (item) => item._id.toString() === productId
     );
 
     if (productIndex === -1) {
@@ -163,7 +166,7 @@ exports.deleteProductFromCart = async (req, res) => {
     }
 
     const updatedProducts = cart.products.filter(
-      (item) => item.product.toString() !== productId
+      (item) => item._id.toString() !== productId
     );
 
     cart.products = updatedProducts;
