@@ -16,11 +16,9 @@ exports.addProductToCart = async (req, res) => {
 
     const decoded = jwt.verify(token, secretKey);
 
+    console.log("decoded", decoded);
     console.log("body fetch", req.body);
     const { product, quantity, user } = req.body;
-
-    console.log("product, quantity, user", product, quantity, user);
-    console.log("decoded", decoded);
 
     if (user !== decoded.id) {
       return res.status(401).json({

@@ -7,7 +7,7 @@ exports.verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       status: "fail",
-      message: "Unauthorized access, please log in",
+      message: "Unauthorized access from middleware, please log in",
     });
   }
   try {
