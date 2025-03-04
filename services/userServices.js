@@ -85,7 +85,7 @@ exports.signIn = async (req, res) => {
       );
     }
 
-    res.cookie("cookie", token, {
+    res.cookie("cookieTCart", token, {
       httpOnly: true,
       sameSite: "strict",
       maxAge: 60 * 1000 * 60 * 24 * 7, // 7 day,
