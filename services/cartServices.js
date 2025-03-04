@@ -5,8 +5,7 @@ const secretKey = "secretKey1234";
 
 exports.addProductToCart = async (req, res) => {
   try {
-    const token = req.cookies.cookie;
-
+    const token = req.cookies.cookieTCart;
     if (!token) {
       return res.status(401).json({
         status: "fail",
@@ -16,8 +15,6 @@ exports.addProductToCart = async (req, res) => {
 
     const decoded = jwt.verify(token, secretKey);
 
-    console.log("decoded", decoded);
-    console.log("body fetch", req.body);
     const { product, quantity, user } = req.body;
 
     if (user !== decoded.id) {
@@ -74,7 +71,7 @@ exports.addProductToCart = async (req, res) => {
 
 exports.getCartItems = async (req, res) => {
   try {
-    const token = req.cookies.cookie;
+    const token = req.cookies.cookieTCart;
 
     console.log("token check", token);
 
@@ -125,7 +122,7 @@ exports.getCartItems = async (req, res) => {
 
 exports.deleteProductFromCart = async (req, res) => {
   try {
-    const token = req.cookies.cookie;
+    const token = req.cookies.cookieTCart;
 
     if (!token) {
       return res.status(401).json({

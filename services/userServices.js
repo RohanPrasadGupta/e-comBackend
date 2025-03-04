@@ -41,6 +41,7 @@ exports.signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
     const userDetails = await UserModel.findOne({ email }).select("+password");
+
     if (!userDetails) {
       return res.status(404).json({
         status: "fail",
