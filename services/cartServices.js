@@ -5,27 +5,27 @@ const secretKey = "secretKey1234";
 
 exports.addProductToCart = async (req, res) => {
   try {
-    const token = req.cookies.cookieTCart;
+    // const token = req.cookies.cookieTCart;
 
-    console.log("token check", token);
-    if (!token) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // console.log("token check", token);
+    // if (!token) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
-    const decoded = jwt.verify(token, secretKey);
+    // const decoded = jwt.verify(token, secretKey);
 
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
     const { product, quantity, user } = req.body;
 
-    if (user !== decoded.id) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // if (user !== decoded.id) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
     const cart = await cartModel.findOne({ user: user });
 
@@ -74,24 +74,24 @@ exports.addProductToCart = async (req, res) => {
 
 exports.getCartItems = async (req, res) => {
   try {
-    const token = req.cookies.cookieTCart;
+    // const token = req.cookies.cookieTCart;
 
-    if (!token) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // if (!token) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
-    const decoded = jwt.verify(token, secretKey);
+    // const decoded = jwt.verify(token, secretKey);
     const userID = req.query.UserId;
 
-    if (userID !== decoded.id) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // if (userID !== decoded.id) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
     const cart = await cartModel.findOne({ user: userID }).populate({
       path: "products.product",
@@ -123,26 +123,26 @@ exports.getCartItems = async (req, res) => {
 
 exports.deleteProductFromCart = async (req, res) => {
   try {
-    const token = req.cookies.cookieTCart;
+    // const token = req.cookies.cookieTCart;
 
-    if (!token) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // if (!token) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
-    const decoded = jwt.verify(token, secretKey);
+    // const decoded = jwt.verify(token, secretKey);
 
     const productId = req.query.productId;
     const userID = req.query.UserId;
 
-    if (userID !== decoded.id) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Unauthorized access, please log in",
-      });
-    }
+    // if (userID !== decoded.id) {
+    //   return res.status(401).json({
+    //     status: "fail",
+    //     message: "Unauthorized access, please log in",
+    //   });
+    // }
 
     const cart = await cartModel.findOne({ user: userID });
 
