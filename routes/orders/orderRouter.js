@@ -9,8 +9,6 @@ router
   .post(orderController.addProductToOrder)
   .get(orderController.getOrderByUser);
 
-router
-  .route("/getAllOrders")
-  .get(verifyTokenAndAdmin, orderController.getAllOrders);
+router.route("/getAllOrders").get(orderController.getAllOrders);
 
 module.exports = router;
