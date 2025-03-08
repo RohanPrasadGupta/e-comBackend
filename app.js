@@ -16,7 +16,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3002",
-  "http://localhost:3001",
+  "http://localhost:3000",
   "https://rpg-ecommerce.netlify.app",
   "https://e-combackend-jbal.onrender.com",
 ];
