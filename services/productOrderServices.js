@@ -74,7 +74,8 @@ exports.getOrderByUser = async (req, res) => {
 
     // const decoded = jwt.verify(token, secretKey);
 
-    const { user } = req.body;
+    // const { user } = req.body;
+    const userID = req.query.UserId;
 
     // if (user !== decoded.id) {
     //   return res.status(401).json({
@@ -82,7 +83,7 @@ exports.getOrderByUser = async (req, res) => {
     //     message: "Unauthorized access, please log in",
     //   });
     // }
-    const orders = await orderProductModel.find({ user }).populate({
+    const orders = await orderProductModel.find({ user: userID }).populate({
       path: "products.product",
       model: "Product",
     });
