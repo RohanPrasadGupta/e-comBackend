@@ -83,10 +83,13 @@ exports.getOrderByUser = async (req, res) => {
     //     message: "Unauthorized access, please log in",
     //   });
     // }
-    const orders = await orderProductModel.find({ user: userID }).populate({
-      path: "products.product",
-      model: "Product",
-    });
+    const orders = await orderProductModel
+      .find({ user: userID })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "products.product",
+        model: "Product",
+      });
 
     if (!orders) {
       return res.status(404).json({
