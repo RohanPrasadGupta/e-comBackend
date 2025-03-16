@@ -11,4 +11,6 @@ router
   .get(cartController.getCartItems)
   .delete(cartController.deleteProductFromCart);
 
+router.route("/updateCart").post(cartController.updateQuantityOfOrder);
+
 module.exports = router;

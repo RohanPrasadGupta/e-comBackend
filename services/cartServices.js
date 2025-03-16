@@ -182,3 +182,46 @@ exports.deleteProductFromCart = async (req, res) => {
     });
   }
 };
+
+exports.updateQuantityOfOrder = async (req, res) => {
+  try {
+    const { productIndexId, userID, quantity } = req.body;
+
+    console.log("all inputs", productIndexId, userID, quantity);
+
+    const cart = await cartModel.findOne({ user: userID });
+
+    if (!cart) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Cart not found",
+      });
+    }
+
+    console.log("cart", cart);
+
+    const productIndex = cart.products.findIndex(
+      (item) => item._id.toString() === productIndexId
+    );
+
+    if (productIndex === -1) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Product not found in cart",
+      });
+    }
+
+    cart.products[productIndex].quantity = quantity;
+    await cart.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product quantity updated in cart",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
