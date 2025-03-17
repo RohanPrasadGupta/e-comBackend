@@ -33,6 +33,18 @@ const productOrderedSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  address: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("orders", productOrderedSchema);

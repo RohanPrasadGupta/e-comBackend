@@ -1,34 +1,36 @@
 const jwt = require("jsonwebtoken");
 const orderProductModel = require("../models/productOrderedModel");
+const cartModel = require("../models/cartModel");
 
 const secretKey = "secretKey1234";
 
 exports.addProductToOrder = async (req, res) => {
   try {
-    // const token = req.cookies.cookie;
-
-    // if (!token) {
-    //   return res.status(401).json({
-    //     status: "fail",
-    //     message: "Unauthorized access, please log in",
-    //   });
-    // }
-
-    // const decoded = jwt.verify(token, secretKey);
-
-    const { orderItems: productsArray, user } = req.body;
-
-    // if (user !== decoded.id) {
-    //   return res.status(401).json({
-    //     status: "fail",
-    //     message: "Unauthorized access, please log in",
-    //   });
-    // }
+    const {
+      orderItems: productsArray,
+      user,
+      address,
+      phoneNumber,
+      name,
+    } = req.body;
 
     const newOrder = await orderProductModel.create({
       user: user,
       products: productsArray,
+      address,
+      phoneNumber,
+      name,
     });
+
+    const cart = await cartModel.findOne({ user });
+
+    for (const product of productsArray) {
+      cart.products = cart.products.filter(
+        (item) => item._id.toString() !== product.ProdCartId
+      );
+      await cart.save();
+    }
+
     res.status(201).json({
       status: "success",
       data: {
