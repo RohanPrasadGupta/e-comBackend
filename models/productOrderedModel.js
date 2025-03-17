@@ -45,6 +45,10 @@ const productOrderedSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isCanceled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("orders", productOrderedSchema);

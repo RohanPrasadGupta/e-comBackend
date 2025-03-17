@@ -115,12 +115,17 @@ exports.getOrderByUser = async (req, res) => {
   }
 };
 
-exports.deleteOrder = async (req, res) => {
+exports.cancelOrder = async (req, res) => {
   try {
     const orderId = req.query.orderId;
-    const deletedOrder = await orderProductModel.findByIdAndDelete(orderId);
 
-    if (!deletedOrder) {
+    const updatedOrder = await orderProductModel.findByIdAndUpdate(
+      orderId,
+      { isCanceled: true },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
       return res.status(404).json({
         status: "fail",
         message: "Order not found",
@@ -129,7 +134,8 @@ exports.deleteOrder = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      message: "Order deleted successfully",
+      message: "Order cancelled successfully",
+      order: updatedOrder,
     });
   } catch (error) {
     res.status(400).json({

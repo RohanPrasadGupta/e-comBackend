@@ -8,7 +8,7 @@ router
   .route("/order")
   .post(orderController.addProductToOrder)
   .get(orderController.getOrderByUser)
-  .delete(orderController.deleteOrder);
+  .delete(orderController.cancelOrder);
 
 router.route("/getAllOrders").get(orderController.getAllOrders);
 
