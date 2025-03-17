@@ -7,7 +7,8 @@ const router = express.Router();
 router
   .route("/order")
   .post(orderController.addProductToOrder)
-  .get(orderController.getOrderByUser);
+  .get(orderController.getOrderByUser)
+  .delete(orderController.deleteOrder);
 
 router.route("/getAllOrders").get(orderController.getAllOrders);
 
