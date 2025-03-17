@@ -118,10 +118,11 @@ exports.getOrderByUser = async (req, res) => {
 exports.cancelOrder = async (req, res) => {
   try {
     const orderId = req.query.orderId;
+    console.log(orderId);
 
     const updatedOrder = await orderProductModel.findByIdAndUpdate(
       orderId,
-      { isCanceled: true },
+      { isCanceled: true, "products.$[].status": "cancelled" },
       { new: true }
     );
 
