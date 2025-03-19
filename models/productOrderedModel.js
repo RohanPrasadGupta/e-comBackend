@@ -28,6 +28,14 @@ const productOrderedSchema = new mongoose.Schema({
       },
     },
   ],
+  shippingFee: {
+    type: Number,
+    required: true,
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
+  },
 
   date: {
     type: Date,
