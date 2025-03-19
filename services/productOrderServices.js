@@ -12,6 +12,8 @@ exports.addProductToOrder = async (req, res) => {
       address,
       phoneNumber,
       name,
+      shippingFee,
+      totalAmount,
     } = req.body;
 
     const newOrder = await orderProductModel.create({
@@ -20,6 +22,8 @@ exports.addProductToOrder = async (req, res) => {
       address,
       phoneNumber,
       name,
+      shippingFee,
+      totalAmount,
     });
 
     const cart = await cartModel.findOne({ user });
